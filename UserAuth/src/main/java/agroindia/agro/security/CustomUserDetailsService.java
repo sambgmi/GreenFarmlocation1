@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -15,14 +17,30 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    public UserDetails loadUserByUsername(String loginField) throws UsernameNotFoundException {
+        System.out.println("Attempting to load user with login field: " + loginField);
         
-        return org.springframework.security.core.userdetails.User
-            .withUsername(user.getEmail())
-            .password(user.getPassword())
-            .roles(user.getRole().name())
-            .build();
+        try {
+            // Try email first
+            Optional<User> userByEmail = userRepository.findByEmail(loginField);
+            if (userByEmail.isPresent()) {
+                System.out.println("User found by email: " + loginField);
+                return userByEmail.get();
+            }
+            
+            // Try name if email fails
+            Optional<User> userByName = userRepository.findByName(loginField);
+            if (userByName.isPresent()) {
+                System.out.println("User found by name: " + loginField);
+                return userByName.get();
+            }
+            
+            System.out.println("No user found with email or name: " + loginField);
+            throw new UsernameNotFoundException("User not found with email or name: " + loginField);
+            
+        } catch (Exception e) {
+            System.out.println("Error during user lookup: " + e.getMessage());
+            throw new UsernameNotFoundException("Error during user lookup", e);
+        }
     }
 }

@@ -47,6 +47,11 @@ public class AdminController {
         return ResponseEntity.ok(userService.getAllBuyers());
     }
 
+    @GetMapping("/public/products")
+    public ResponseEntity<List<Product>> getAllProductsPublic() {
+        return ResponseEntity.ok(productService.getAllProducts());
+    }
+
    
 
     @DeleteMapping ("/users/{userId}")

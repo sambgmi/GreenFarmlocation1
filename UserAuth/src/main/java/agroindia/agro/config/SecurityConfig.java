@@ -37,12 +37,12 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**", "/login/**", "/oauth2/**").permitAll()
+                .requestMatchers("/api/admin/public/**").permitAll()  // Add this line
                 .requestMatchers("/api/products/**").permitAll()
-                .requestMatchers("/api/products/add").permitAll()
-                .requestMatchers("/api/products/all").permitAll()
+                .requestMatchers("/api/farmer/products/**").permitAll()
+                .requestMatchers("/api/farmer/products/public/**").permitAll()     
                 .requestMatchers("/api/products/category/**").permitAll()
-                .requestMatchers("/api/admin/categories").permitAll() 
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")  // Moved to end of specific patterns
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth2 -> oauth2
