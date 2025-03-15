@@ -23,7 +23,7 @@ public class Product {
     
     @Enumerated(EnumType.STRING)
     private Category category;
-    
+    @Column(length = 1000) 
     private String imageUrl;
     
     @ManyToOne

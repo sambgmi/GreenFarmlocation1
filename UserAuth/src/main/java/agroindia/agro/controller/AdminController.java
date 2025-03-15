@@ -70,4 +70,26 @@ public class AdminController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Long productId) {
+        try {
+            productService.deleteProduct(productId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to delete product: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<Product> updateProduct(
+            @PathVariable Long productId,
+            @RequestBody Product updatedProduct) {
+        try {
+            Product product = productService.updateProduct(productId, updatedProduct);
+            return ResponseEntity.ok(product);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

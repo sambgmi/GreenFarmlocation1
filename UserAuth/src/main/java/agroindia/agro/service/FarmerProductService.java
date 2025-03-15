@@ -116,4 +116,29 @@ public class FarmerProductService {
         List<FarmerProduct> farmerProducts = farmerProductRepository.findByProduct_Category(category);
         return convertToProductDTOs(farmerProducts);
     }
+
+    public void deleteFarmerProduct(User farmer, Long farmerProductId) {
+        FarmerProduct farmerProduct = farmerProductRepository.findById(farmerProductId)
+            .orElseThrow(() -> new RuntimeException("Farmer product not found"));
+            
+        if (!farmerProduct.getFarmer().getId().equals(farmer.getId())) {
+            throw new RuntimeException("Not authorized to delete this product");
+        }
+        
+        farmerProductRepository.delete(farmerProduct);
+    }
+
+    public FarmerProduct findByProductAndFarmerAndPrice(Long productId, Long farmerId, BigDecimal bargainPrice) {
+        return farmerProductRepository.findByProduct_IdAndFarmer_IdAndBargainPrice(productId, farmerId, bargainPrice)
+            .orElseThrow(() -> new RuntimeException("Farmer product not found"));
+    }
+
+    public List<FarmerProduct> getAllFarmerProducts() {
+        return farmerProductRepository.findAll();
+    }
+
+    public FarmerProduct getFarmerProductById(Long id) {
+        return farmerProductRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Farmer product not found"));
+    }
 }

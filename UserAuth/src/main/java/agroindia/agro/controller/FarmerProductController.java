@@ -77,4 +77,12 @@ public class FarmerProductController {
             @PathVariable String category) {
         return ResponseEntity.ok(farmerProductService.getPublicProductsByCategory(Category.valueOf(category)));
     }
+
+    @DeleteMapping("/{farmerProductId}")
+    public ResponseEntity<?> deleteFarmerProduct(
+            @AuthenticationPrincipal User farmer,
+            @PathVariable Long farmerProductId) {
+        farmerProductService.deleteFarmerProduct(farmer, farmerProductId);
+        return ResponseEntity.ok().build();
+    }
 }

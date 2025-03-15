@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**", "/login/**", "/oauth2/**").permitAll()
                 .requestMatchers("/api/admin/public/**").permitAll()  // Add this line
                 .requestMatchers("/api/products/**").permitAll()
+                .requestMatchers("/api/cart/add").permitAll()
                 .requestMatchers("/api/farmer/products/**").permitAll()
                 .requestMatchers("/api/farmer/products/public/**").permitAll()     
                 .requestMatchers("/api/products/category/**").permitAll()
