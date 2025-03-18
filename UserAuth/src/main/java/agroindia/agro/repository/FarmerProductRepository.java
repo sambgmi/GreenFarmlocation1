@@ -29,4 +29,9 @@ public interface FarmerProductRepository extends JpaRepository<FarmerProduct, Lo
     
     Optional<FarmerProduct> findByProduct_IdAndFarmer_IdAndBargainPrice(
             Long productId, Long farmerId, BigDecimal bargainPrice);
+    
+    List<FarmerProduct> findByProduct_NameContainingIgnoreCaseOrProduct_DescriptionContainingIgnoreCase(
+            String name, String description);
+    
+    List<FarmerProduct> findByProduct(Product product);
 }

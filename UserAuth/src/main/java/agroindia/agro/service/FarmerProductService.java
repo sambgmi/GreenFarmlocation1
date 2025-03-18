@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class FarmerProductService {
@@ -140,5 +137,35 @@ public class FarmerProductService {
     public FarmerProduct getFarmerProductById(Long id) {
         return farmerProductRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Farmer product not found"));
+    }
+
+    public List<FarmerProductDTO> searchFarmerProducts(String query) {
+        List<FarmerProduct> farmerProducts = farmerProductRepository.findByProduct_NameContainingIgnoreCaseOrProduct_DescriptionContainingIgnoreCase(query, query);
+        return convertToProductDTOs(farmerProducts);
+    }
+
+    public FarmerProductDTO getFarmerProductDetails(Long farmerProductId) {
+        FarmerProduct farmerProduct = farmerProductRepository.findById(farmerProductId)
+            .orElseThrow(() -> new RuntimeException("Farmer product not found"));
+            
+        FarmerProductDTO dto = new FarmerProductDTO();
+        dto.setProductId(farmerProduct.getProduct().getId());
+        dto.setProductName(farmerProduct.getProduct().getName());
+        dto.setDescription(farmerProduct.getProduct().getDescription());
+        dto.setCategory(farmerProduct.getProduct().getCategory());
+        dto.setBasePrice(farmerProduct.getProduct().getPrice());
+        dto.setImageUrl(farmerProduct.getProduct().getImageUrl());
+        
+        List<FarmerDetailDTO> farmers = new ArrayList<>();
+        FarmerDetailDTO farmerDetail = new FarmerDetailDTO();
+        farmerDetail.setFarmerId(farmerProduct.getFarmer().getId());
+        farmerDetail.setFarmerName(farmerProduct.getFarmer().getName());
+        farmerDetail.setStock(farmerProduct.getQuantity());
+        farmerDetail.setBargainPrice(farmerProduct.getBargainPrice());
+        farmers.add(farmerDetail);
+        
+        dto.setFarmers(farmers);
+        
+        return dto;
     }
 }

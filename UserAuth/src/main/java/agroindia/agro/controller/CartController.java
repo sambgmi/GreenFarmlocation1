@@ -72,7 +72,25 @@ public class CartController {
         }).collect(Collectors.toList());
         return ResponseEntity.ok(details);
     }
-
+@GetMapping("/public/farmer-products/details")
+    public ResponseEntity<List<Map<String, Object>>> getPublicFarmerProductDetails() {
+        List<FarmerProduct> products = farmerProductService.getAllFarmerProducts();
+        List<Map<String, Object>> details = products.stream().map(fp -> {
+            Map<String, Object> detail = new HashMap<>();
+            detail.put("farmerProductId", fp.getId());
+            detail.put("productName", fp.getProduct().getName());
+            detail.put("productId", fp.getProduct().getId());
+            detail.put("farmerId", fp.getFarmer().getId());
+            detail.put("farmerName", fp.getFarmer().getName());
+            detail.put("bargainPrice", fp.getBargainPrice());
+            detail.put("stock", fp.getQuantity());
+            detail.put("imageUrl", fp.getProduct().getImageUrl());
+            detail.put("description", fp.getProduct().getDescription());
+            detail.put("category", fp.getProduct().getCategory());
+            return detail;
+        }).collect(Collectors.toList());
+        return ResponseEntity.ok(details);
+    }
     @GetMapping("/find-product")
     public ResponseEntity<FarmerProduct> getFarmerProduct(
             @RequestParam Long productId,

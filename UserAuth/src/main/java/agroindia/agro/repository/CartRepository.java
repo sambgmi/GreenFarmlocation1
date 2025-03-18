@@ -12,4 +12,7 @@ import java.util.Optional;
 public interface CartRepository extends JpaRepository<Cart, Long> {
     List<Cart> findByBuyer(User buyer);
     Optional<Cart> findByBuyerAndFarmerProduct(User buyer, FarmerProduct farmerProduct);
+    
+    // Add this method
+    void deleteByFarmerProduct(FarmerProduct farmerProduct);
 }

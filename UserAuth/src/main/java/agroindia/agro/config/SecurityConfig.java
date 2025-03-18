@@ -36,22 +36,21 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**", "/login/**", "/oauth2/**").permitAll()
-                .requestMatchers("/api/admin/public/**").permitAll()  // Add this line
+                .requestMatchers("/api/auth/**", "/login/**", "/oauth2/**", "/login/oauth2/code/*").permitAll()
+                .requestMatchers("/api/admin/public/**").permitAll()
                 .requestMatchers("/api/products/**").permitAll()
                 .requestMatchers("/api/cart/add").permitAll()
+                .requestMatchers("/api/cart/public/**").permitAll()  // Add this line
                 .requestMatchers("/api/farmer/products/**").permitAll()
                 .requestMatchers("/api/farmer/products/public/**").permitAll()     
                 .requestMatchers("/api/products/category/**").permitAll()
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")  // Moved to end of specific patterns
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth2 -> oauth2
                 .successHandler(oAuth2SuccessHandler)
-                .authorizationEndpoint(endpoint -> 
-                    endpoint.baseUri("/oauth2/authorize"))
-                .redirectionEndpoint(endpoint -> 
-                    endpoint.baseUri("/login/oauth2/code/*"))
+                .authorizationEndpoint(endpoint -> endpoint.baseUri("/oauth2/authorize"))
+                .redirectionEndpoint(endpoint -> endpoint.baseUri("/login/oauth2/code/*"))
             )
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -62,10 +61,26 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList(
+            "http://localhost:3000",
+            "https://accounts.google.com"
+        ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin", "*"));
-        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowedHeaders(Arrays.asList(
+            "Authorization", 
+            "Content-Type", 
+            "X-Requested-With", 
+            "Accept", 
+            "Origin",
+            "Access-Control-Allow-Origin",
+            "Access-Control-Allow-Credentials"
+        ));
+        configuration.setExposedHeaders(Arrays.asList(
+            "Authorization", 
+            "Content-Type",
+            "Access-Control-Allow-Origin",
+            "Access-Control-Allow-Credentials"
+        ));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
         

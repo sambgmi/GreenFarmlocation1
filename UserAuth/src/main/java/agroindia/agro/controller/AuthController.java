@@ -29,6 +29,7 @@ public class AuthController {
 
     @GetMapping("/oauth2/success")
     public ResponseEntity<?> oauth2LoginSuccess() {
+
         return authService.handleOAuth2Success();
     }
 

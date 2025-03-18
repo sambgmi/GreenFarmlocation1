@@ -60,6 +60,12 @@ public class FarmerProductController {
         return ResponseEntity.ok(farmerProductService.getAllProductsWithFarmerDetails());
     }
 
+    @GetMapping("/public/search")
+    public ResponseEntity<List<FarmerProductDTO>> searchPublicProducts(
+            @RequestParam String query) {
+        return ResponseEntity.ok(farmerProductService.searchFarmerProducts(query));
+    }
+
     @GetMapping("/product/{productId}")
     public ResponseEntity<FarmerProductDTO> getProductDetails(@PathVariable Long productId) {
         return ResponseEntity.ok(farmerProductService.getProductWithFarmerDetails(productId));
@@ -76,6 +82,13 @@ public class FarmerProductController {
     public ResponseEntity<List<FarmerProductDTO>> getPublicProductsByCategory(
             @PathVariable String category) {
         return ResponseEntity.ok(farmerProductService.getPublicProductsByCategory(Category.valueOf(category)));
+    }
+
+
+    @GetMapping("/public/{farmerProductId}")
+    public ResponseEntity<FarmerProductDTO> getPublicFarmerProductDetails(
+            @PathVariable Long farmerProductId) {
+        return ResponseEntity.ok(farmerProductService.getFarmerProductDetails(farmerProductId));
     }
 
     @DeleteMapping("/{farmerProductId}")
