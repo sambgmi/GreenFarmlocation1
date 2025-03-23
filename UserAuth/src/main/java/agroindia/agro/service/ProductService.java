@@ -94,4 +94,15 @@ public class ProductService {
             return result;
         }).collect(Collectors.toList());
     }
+
+    // This method is no longer needed as deletion is handled in UserService
+    // Keeping the method signature for backward compatibility
+    public void deleteAllProductsByFarmerId(Long farmerId) {
+        // Even though this is handled in UserService.deleteUser, we'll implement it for backward compatibility
+        List<Product> farmerProducts = productRepository.findByFarmerId(farmerId);
+        
+        for (Product product : farmerProducts) {
+            deleteProduct(product.getId());
+        }
+    }
 }

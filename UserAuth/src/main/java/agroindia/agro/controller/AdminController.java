@@ -56,8 +56,14 @@ public class AdminController {
 
     @DeleteMapping ("/users/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
-        return ResponseEntity.ok().build();
+        try {
+            // The updated UserService.deleteUser method now handles all relationships properly
+            // including cart items for buyers and products/farmer products for farmers
+            userService.deleteUser(userId);
+            return ResponseEntity.ok().body("User deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to delete user: " + e.getMessage());
+        }
     }
 
     @PostMapping("/products/add")

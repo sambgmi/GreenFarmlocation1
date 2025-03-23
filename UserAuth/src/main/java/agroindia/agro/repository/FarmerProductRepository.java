@@ -34,4 +34,7 @@ public interface FarmerProductRepository extends JpaRepository<FarmerProduct, Lo
             String name, String description);
     
     List<FarmerProduct> findByProduct(Product product);
+    
+    // Method to delete farmer products by farmer
+    void deleteByFarmer(User farmer);
 }

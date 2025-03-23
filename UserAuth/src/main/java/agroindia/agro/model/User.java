@@ -70,4 +70,7 @@ public class User implements UserDetails {
     
     private String otp;
     private LocalDateTime otpExpiry;
+    
+    // Add this field to your User class
+    private String location;
 }

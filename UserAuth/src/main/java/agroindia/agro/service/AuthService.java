@@ -38,6 +38,9 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(request.getRole());
         user.setProvider("LOCAL");
+        if (request.getLocation() != null && !request.getLocation().isEmpty()) {
+            user.setLocation(request.getLocation());
+        }
         
         userRepository.save(user);
 

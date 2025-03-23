@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "agroindia.agro.repository")
 @ComponentScan(basePackages = "agroindia.agro")
-public class AgroApplication {
+public class AgroApplication {  
     public static void main(String[] args) {
         SpringApplication.run(AgroApplication.class, args);
     }

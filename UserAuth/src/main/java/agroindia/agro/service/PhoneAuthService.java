@@ -29,7 +29,6 @@ public class PhoneAuthService {
         user.setOtpExpiry(LocalDateTime.now().plusMinutes(5));
         userRepository.save(user);
         
-        // TODO: Integrate with Twilio/Firebase to send OTP
         System.out.println("OTP for " + phoneNumber + ": " + otp);
     }
 

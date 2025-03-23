@@ -15,4 +15,5 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     
     // Add this method
     void deleteByFarmerProduct(FarmerProduct farmerProduct);
+    void deleteByBuyerId(Long buyerId);
 }

@@ -25,6 +25,7 @@ public class FarmerProductService {
     private ProductRepository productRepository;
 
     public List<FarmerProduct> getFarmerProducts(User farmer) {
+
         return farmerProductRepository.findByFarmer(farmer);
     }
 
@@ -76,7 +77,7 @@ public class FarmerProductService {
         return convertToProductDTO(farmerProducts);
     }
 
-    private List<FarmerProductDTO> convertToProductDTOs(List<FarmerProduct> farmerProducts) {
+    public List<FarmerProductDTO> convertToProductDTOs(List<FarmerProduct> farmerProducts) {
         Map<Long, FarmerProductDTO> productMap = new HashMap<>();
 
         for (FarmerProduct fp : farmerProducts) {
